@@ -47,17 +47,17 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
   try {
     const prompt = req.body.prompt;
-    
-    const response = openai.createChatCompletion({
+  
+    const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{role: "user", content: `${prompt}`}],
     });
-    // console.log(response.data)
+    console.log(response.data.choices[0])
     res.status(200).send({
-        bot:response.data.choices[0].text
+        bot:response.data.choices[0].message.content
     })
   } catch (error) {
-    console.log(error.response.data.error);
+    console.log(error.response);
     res.status(500).send({error})
   }
 });
